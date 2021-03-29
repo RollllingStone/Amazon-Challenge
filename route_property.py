@@ -20,3 +20,4 @@ df.rename(columns={'route id':'route_id','data_YYYY_MM_DD':'date_YYYY_MM_DD'},in
 import sqlite3 as sql
 con = sql.connect('amazon_last_mile_route.db')
 df.to_sql('route',con,if_exists='append',index=False)
+con.close()
