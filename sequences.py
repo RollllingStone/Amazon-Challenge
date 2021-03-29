@@ -29,7 +29,7 @@ df = pd.DataFrame(rows, columns = col_names)
 import sqlite3 as sql
 con = sql.connect('amazon_last_mile_route.db')
 df.to_sql('route_path',con,if_exists='append',index=False)
-df2 = pd.read_sql('select * from route_path',con)
+df2 = pd.read_sql('select count(*) from route_path',con)
 con.close()
 
 
