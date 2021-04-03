@@ -4,6 +4,7 @@ import json
 with open("./data/model_build_inputs/travel_times.json") as travel_time_source:
     travel_times = json.load(travel_time_source)
 print('travel time file loaded')
+
 col_names = ['index0', 'route_id', 'stop1', 'stop2', 'travel_time']
 """
 index0 INTEGER PRIMARY KEY,
