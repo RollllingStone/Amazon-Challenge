@@ -2,16 +2,20 @@
 
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
+import pandas as pd
+import sqlite3 as sql
 
+def obj_func(distance_matrix, actual_sequence):
+    # TODO: complete
+    return obj_val
 
-def create_data_model():
+def create_data_model(con,route_id):
     """Stores the data for the problem."""
     data = {}
-    data['distance_matrix'] = [
-        [0, 1, 1000],
-        [3, 0, 1],
-        [100, 3, 0]
-    ]  # yapf: disable
+    df1 = pd.read_sql('SELECT * FROM travel_times WHERE route_id = "{0}";'.format(route_id), con)
+    #df1_data = df1.pivot().values
+    data['distance_matrix'] =  df1.pivot(index='stop1',columns='stop2',values='travel_time').values
+    print('data loaded for {0}'.format(route_id))
     data['num_vehicles'] = 1
     data['depot'] = 0
     return data
@@ -33,10 +37,10 @@ def print_solution(manager, routing, solution):
     plan_output += 'Route distance: {}miles\n'.format(route_distance)
 
 
-def main():
+def main(route_id, con):
     """Entry point of the program."""
     # Instantiate the data problem.
-    data = create_data_model()
+    data = create_data_model(con, route_id)
 
     # Create the routing index manager.
     manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),
@@ -59,7 +63,7 @@ def main():
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
     # Setting first solution heuristic.
-    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+    search_parameters = pywrapcp.DefaultRoutingSearchParameters() # TODO: change parameters
     search_parameters.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
 
@@ -72,4 +76,13 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    con = sql.connect('amazon_last_mile_route.db')
+    df_route = pd.read_sql('SELECT * FROM route',con)
+    for index in df_route.index:
+        route_id = df_route.loc[index,'route_id']
+        main(route_id, con)
+        break
+
+
+    #for route_id in df_route['route_id']:
+    #    main(route_id, con)

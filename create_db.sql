@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS route(
   route_id TEXT PRIMARY KEY,
   station_code TEXT DEFAULT NULL,
   date_YYYY_MM_DD TEXT DEFAULT NULL,
-  departure_time_utc TEXT NULL,
+  departure_time_utc TEXT DEFAULT NULL,
   executor_capacity_cm3 REAL DEFAULT NULL,
   route_score TEXT DEFAULT NULL);
 
