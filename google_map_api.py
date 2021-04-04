@@ -28,7 +28,7 @@ def get_google_map_dist_matrix(lat_lng_dict, departure_time, dist_matrix_history
         
     dt = datetime.now()
     departure_time0 = departure_time0.replace(year=dt.year, month=dt.month, day=dt.day) + timedelta(days=1)
-    API_KEY = 'AIzaSyDLvwl-mR9a5P7dADbME5Zf9ouwmPlRJlU'
+    API_KEY = '******'
     gmaps = googlemaps.Client(key=API_KEY)
     dist_matrix = gmaps.distance_matrix(origins=lat_lng_list[:MAX_SIZE], destinations=lat_lng_list[:MAX_SIZE], mode='driving',
                                         departure_time=departure_time0)
